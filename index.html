@@ -9,8 +9,8 @@ a{font-family:'Jack',sans-serif;display:inline-block;margin-top:24px;padding:14p
 a.s{background:transparent;color:#2fd1a2;border:1px solid #2fd1a2}
 </style>
 </head><body>
-<h2>بەشداربە لە گروپ</h2>
-<p id="c" style="letter-spacing:3px;font-size:22px"></p>
+<h2 id="ttl">بەشداربە لە گروپ</h2>
+<p id="sub" style="opacity:.8;font-size:15px;margin:8px 0 0"></p>
 <a id="open" href="#">کردنەوە لە بەرنامەی زیندەزانی 12</a><br>
 <a id="dl" class="s" href="#">ئەپەکە دانەمەزراوە؟ دایبگرە</a>
 <div id="pb" style="display:none;max-width:320px;margin:20px auto 0"><div style="height:10px;border-radius:6px;background:#1d4a42;overflow:hidden"><div id="bar" style="height:100%;width:0;background:#2fd1a2"></div></div><p id="pt" style="font-size:14px;margin:8px 0 0"></p></div>
@@ -22,7 +22,12 @@ var FILE_NAME='زیندەزانی پۆلی 12.apk';
 
 var code=(location.pathname.split('/').pop()||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 var $=function(i){return document.getElementById(i)};
-$('c').textContent=code.length==8?code.slice(0,4)+'-'+code.slice(4):'';
+var duel=location.search.indexOf('duel')>=0;
+if(duel){
+  $('ttl').textContent='بانگێشتی پێشبڕکێی دوو کەسی';
+  $('sub').textContent='هاوڕێکەت بانگێشتی کردوویت بۆ پێشبڕکێ لە زیندەزانی 12';
+  $('open').textContent='کردنەوەی پێشبڕکێ لە بەرنامەکە';
+}
 
 var busy=false;
 function saveBlob(b){
@@ -61,7 +66,7 @@ $('dl').addEventListener('click',startDownload);
 
 // ئەگەر ئەپەکە دانەمەزرابوو، ڕاستەوخۆ هەمان لاپەڕە دایدەگرێت (نەک Dropbox)
 var back=location.href.split('#')[0]+'#dl';
-var link='intent://join/'+code+'#Intent;scheme=biology12;package=com.biology.class12;S.browser_fallback_url='+encodeURIComponent(back)+';end';
+var link='intent://join/'+code+(duel?'?duel':'')+'#Intent;scheme=biology12;package=com.biology.class12;S.browser_fallback_url='+encodeURIComponent(back)+';end';
 $('open').href=link;
 if(location.hash=='#dl'){startDownload();}
 else if(code.length==8){setTimeout(function(){location.href=link;},300);}
