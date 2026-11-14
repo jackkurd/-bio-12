@@ -1,73 +1,11 @@
 <!doctype html>
 <html lang="ckb" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>زیندەزانی 12</title>
-<style>
-@font-face{font-family:'Jack';src:url('/-bio-12/jack.ttf') format('truetype');font-display:swap}
-body{font-family:'Jack',sans-serif;background:#0f2a26;color:#fff;text-align:center;padding:48px 20px}
-a{font-family:'Jack',sans-serif;display:inline-block;margin-top:24px;padding:14px 28px;border-radius:14px;background:#2fd1a2;color:#0d3b32;font-weight:700;text-decoration:none}
-a.s{background:transparent;color:#2fd1a2;border:1px solid #2fd1a2}
-</style>
-</head><body>
-<h2 id="ttl">بەشداربە لە گروپ</h2>
-<p id="sub" style="opacity:.8;font-size:15px;margin:8px 0 0"></p>
-<a id="open" href="#">کردنەوە لە بەرنامەی زیندەزانی 12</a><br>
-<a id="dl" class="s" href="#">ئەپەکە دانەمەزراوە؟ دایبگرە</a>
-<div id="pb" style="display:none;max-width:320px;margin:20px auto 0"><div style="height:10px;border-radius:6px;background:#1d4a42;overflow:hidden"><div id="bar" style="height:100%;width:0;background:#2fd1a2"></div></div><p id="pt" style="font-size:14px;margin:8px 0 0"></p></div>
+<title>زیندەزانی پۆلی 12</title></head><body style="background:#12151b;color:#fff;font-family:sans-serif;text-align:center;padding:48px 20px">
+<p>...</p>
 <script>
-// لینکی ئەپەکە (Dropbox) — تەنها وەک سەرچاوە بەکاردێت، بەکارهێنەر ناچێتە سەر Dropbox
-var DOWNLOAD_URL='https://www.dropbox.com/scl/fi/fghrzfbhfakaxjv3flxdk/12.apk?rlkey=funqbl5xqvf18g45a4vigxnnj&st=y2fxhq0s&dl=1';
-var DIRECT_URL=DOWNLOAD_URL.replace('www.dropbox.com','dl.dropboxusercontent.com');
-var FILE_NAME='زیندەزانی پۆلی 12.apk';
-
+// /-bio-12/ABCD1234  ->  /-bio-12/?join=ABCD1234
+var base=location.pathname.replace(/[^\/]*$/,'');
 var code=(location.pathname.split('/').pop()||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-var $=function(i){return document.getElementById(i)};
-var duel=location.search.indexOf('duel')>=0;
-if(duel){
-  $('ttl').textContent='بانگێشتی پێشبڕکێی دوو کەسی';
-  $('sub').textContent='هاوڕێکەت بانگێشتی کردوویت بۆ پێشبڕکێ لە زیندەزانی 12';
-  $('open').textContent='کردنەوەی پێشبڕکێ لە بەرنامەکە';
-}
-
-var busy=false;
-function saveBlob(b){
-  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=FILE_NAME;
-  document.body.appendChild(a);a.click();
-  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},60000);
-}
-// ڕێگای یەدەگ: داگرتن لە ناو هەمان لاپەڕە بەبێ چوونە شوێنی تر
-function frameDownload(){
-  var f=document.createElement('iframe');f.style.display='none';f.src=DOWNLOAD_URL;document.body.appendChild(f);
-  $('pt').textContent='داگرتن دەستی پێکرد...';
-}
-function startDownload(e){
-  if(e)e.preventDefault();
-  if(busy)return;busy=true;
-  $('pb').style.display='block';$('bar').style.width='0';$('pt').textContent='...خەریکی داگرتنە';
-  fetch(DIRECT_URL).then(function(r){
-    if(!r.ok)throw 0;
-    var total=+r.headers.get('content-length')||0;
-    if(!r.body||!r.body.getReader)return r.blob();
-    var rd=r.body.getReader(),parts=[],got=0;
-    return (function pump(){return rd.read().then(function(x){
-      if(x.done)return new Blob(parts,{type:'application/vnd.android.package-archive'});
-      parts.push(x.value);got+=x.value.length;
-      if(total){var p=Math.round(got/total*100);$('bar').style.width=p+'%';$('pt').textContent=p+'%'}
-      else $('pt').textContent=(got/1048576).toFixed(1)+' MB';
-      return pump();
-    })})();
-  }).then(function(b){
-    $('bar').style.width='100%';$('pt').textContent='تەواو بوو ✓ — ئەپەکە بکەرەوە بۆ دامەزراندن';
-    saveBlob(b);busy=false;
-  }).catch(function(){busy=false;frameDownload();});
-}
-$('dl').href='#';
-$('dl').addEventListener('click',startDownload);
-
-// ئەگەر ئەپەکە دانەمەزرابوو، ڕاستەوخۆ هەمان لاپەڕە دایدەگرێت (نەک Dropbox)
-var back=location.href.split('#')[0]+'#dl';
-var link='intent://join/'+code+(duel?'?duel':'')+'#Intent;scheme=biology12;package=com.biology.class12;S.browser_fallback_url='+encodeURIComponent(back)+';end';
-$('open').href=link;
-if(location.hash=='#dl'){startDownload();}
-else if(code.length==8){setTimeout(function(){location.href=link;},300);}
+location.replace(base+(code.length==8?'?join='+code:''));
 </script></body></html>
