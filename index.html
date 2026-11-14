@@ -10,8 +10,8 @@
     <style>
         /* Barkrdni Fonti Speda */
         @font-face {
-            font-family: 'Speda';
-            src: url('Speda-Bold.ttf') format('truetype');
+            font-family: 'Jack';
+            src: url('jack.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -25,7 +25,7 @@
         }
 
         body {
-            font-family: 'Speda', sans-serif;
+            font-family: 'Jack', sans-serif;
             background: #0a1e3d;
             color: #ffffff;
             overflow-x: hidden;
@@ -106,7 +106,7 @@
         .phone-app-image { width: 100%; height: 100%; object-fit: cover; }
 
         /* --- Download Button --- */
-        .download-btn { padding: 1rem 3rem; font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #0096ff 0%, #1e90ff 50%, #4169e1 100%); border: none; border-radius: 50px; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 0.8rem; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(30, 144, 255, 0.4); margin-top: 1.5rem; font-family: 'Speda', sans-serif; position: relative; overflow: hidden; }
+        .download-btn { padding: 1rem 3rem; font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #0096ff 0%, #1e90ff 50%, #4169e1 100%); border: none; border-radius: 50px; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 0.8rem; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(30, 144, 255, 0.4); margin-top: 1.5rem; font-family: 'Jack', sans-serif; position: relative; overflow: hidden; }
         .download-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(30, 144, 255, 0.6); }
 
         /* --- FEATURES --- */
@@ -133,7 +133,7 @@
         .info-title { font-size: 1.1rem; font-weight: 700; color: #00bfff; margin-bottom: 1rem; display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
         .info-list { list-style: none; color: #b3d9ff; }
         .info-list li { padding: 0.5rem 0; font-size: 1rem; border-bottom: 1px solid rgba(30, 144, 255, 0.1); }
-        .telegram-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #0088cc 0%, #0096ff 100%); color: white; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3); font-family: 'Speda', sans-serif; }
+        .telegram-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #0088cc 0%, #0096ff 100%); color: white; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3); font-family: 'Jack', sans-serif; }
         .telegram-btn:hover { transform: translateY(-3px) scale(1.05); background: linear-gradient(135deg, #0096ff 0%, #00bfff 100%); }
         footer { padding: 1.5rem 0; text-align: center; background: rgba(5, 15, 30, 0.5); border-top: 1px solid rgba(30, 144, 255, 0.2); color: #b3d9ff; font-size: 0.9rem; position: relative; }
 
@@ -142,8 +142,8 @@
         .admin-trigger:hover { color: #00bfff; }
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
         .admin-content { background: #0f2a4a; padding: 2rem; border-radius: 20px; border: 2px solid #00bfff; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(0, 191, 255, 0.3); }
-        .admin-input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #1e90ff; background: #0a1e3d; color: white; font-family: 'Speda', sans-serif; text-align: center; }
-        .admin-btn { background: #00bfff; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Speda', sans-serif; }
+        .admin-input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #1e90ff; background: #0a1e3d; color: white; font-family: 'Jack', sans-serif; text-align: center; }
+        .admin-btn { background: #00bfff; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Jack', sans-serif; }
         .close-modal { position: absolute; top: 20px; right: 20px; color: white; font-size: 1.5rem; cursor: pointer; }
 
         /* Responsive */
@@ -184,6 +184,7 @@
         .admin-msg { margin-top:.8rem; font-size:.9rem; }
         .admin-btns { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:1rem; }
         .admin-btn.sec { background:transparent; border:1px solid #1e90ff; }
+        input, button, textarea { font-family:'Jack', sans-serif; }
         [hidden] { display:none !important; }
 </style>
 </head>
@@ -272,23 +273,27 @@
 
     <div class="admin-modal" id="adminModal">
         <div class="close-modal" id="aX">&times;</div>
-        <div class="admin-content">
-            <h3>بەڕێوەبردنی بەستەر</h3>
-            <label>GitHub Token</label>
-            <input type="password" id="aTok" class="admin-input" autocomplete="off" placeholder="github_pat_...">
-            <label>ڕیپۆ (owner/repo)</label>
-            <input type="text" id="aRepo" class="admin-input" placeholder="username/-bio-12">
-            <label>لینکی نوێی بەرنامە</label>
+
+        <div class="admin-content" id="stepLogin">
+            <h3>بەشی ئەدمین</h3>
+            <input type="password" id="aPass" class="admin-input rtl" placeholder="پاسۆرد" autocomplete="off">
+            <button class="admin-btn" id="aLogin">چوونەژوورەوە</button>
+            <p class="admin-msg" id="aMsg1" hidden></p>
+        </div>
+
+        <div class="admin-content" id="stepLink" hidden>
+            <h3>لینکی بەرنامە</h3>
             <input type="text" id="aUrl" class="admin-input" placeholder="https://...">
-            <label>ژمارەی وەشان (هەڵبژاردەیی)</label>
-            <input type="text" id="aVer" class="admin-input" placeholder="1.2">
-            <label>تێبینی نوێکردنەوە (هەڵبژاردەیی)</label>
-            <input type="text" id="aNotes" class="admin-input rtl" placeholder="چی نوێ بووە؟">
-            <p class="admin-msg" id="aMsg" hidden></p>
-            <div class="admin-btns">
-                <button class="admin-btn" id="aSave">تۆمارکردن</button>
-                <button class="admin-btn sec" id="aForget">لابردنی Token</button>
+            <div id="tokBox" hidden>
+                <label>GitHub Token (تەنها یەکجار لەسەر ئەم ئامێرە)</label>
+                <input type="password" id="aTok" class="admin-input" autocomplete="off" placeholder="github_pat_...">
             </div>
+            <div id="repoBox" hidden>
+                <label>ڕیپۆ (owner/repo)</label>
+                <input type="text" id="aRepo" class="admin-input" placeholder="username/-bio-12">
+            </div>
+            <div class="admin-btns"><button class="admin-btn" id="aSave">تۆمارکردن</button></div>
+            <p class="admin-msg" id="aMsg" hidden></p>
         </div>
     </div>
 

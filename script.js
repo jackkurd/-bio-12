@@ -82,29 +82,51 @@ if(code.length==8){
 if(q.get('dl')==='1'){startDownload();}
 
 /* ---------- بەشی شاراوەی خاوەن ---------- */
+// SHA-256ی پاسۆردەکە (پاسۆردەکە خۆی لێرە نانووسرێت)
+var PASS_HASH='5b2937a27bfd116b1069abaf4fb38f7cac40a0443b207a4dcd74f37a7defe04e';
 var modal=$('adminModal');
-function msg(t,type){var m=$('aMsg');m.textContent=t;m.style.color=type==='ok'?'#4dd0b0':'#ff7a7a';m.hidden=!t}
+function sha(s){
+  s=s.normalize('NFC').trim().replace(/\s+/g,' ');
+  return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){
+    return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2)}).join('');
+  });
+}
+function say(id,t,ok){var m=$(id);m.textContent=t;m.style.color=ok?'#4dd0b0':'#ff7a7a';m.hidden=!t}
+function detectRepo(){
+  var m=location.hostname.match(/^([^.]+)\.github\.io$/),seg=location.pathname.split('/')[1];
+  return (m&&seg)?m[1]+'/'+seg:(store.get('gh_repo')||'');
+}
 function openAdmin(){
-  $('aTok').value=store.get('gh_tok')||'';
-  $('aRepo').value=store.get('gh_repo')||'';
-  $('aUrl').value=cfg.url||'';$('aVer').value=cfg.version||'';$('aNotes').value=cfg.notes||'';
-  msg('');modal.style.display='flex';
+  $('stepLogin').hidden=false;$('stepLink').hidden=true;$('aPass').value='';say('aMsg1','');say('aMsg','');
+  modal.style.display='flex';
 }
 function closeAdmin(){modal.style.display='none'}
 $('lockBtn').onclick=openAdmin;$('aX').onclick=closeAdmin;
 if(location.hash==='#admin')openAdmin();
-$('aForget').onclick=function(){store.del('gh_tok');$('aTok').value='';msg('Token لابرا لەسەر ئەم ئامێرە.','ok')};
+
+$('aLogin').onclick=function(){
+  sha($('aPass').value).then(function(h){
+    if(h!==PASS_HASH)return say('aMsg1','پاسۆرد هەڵەیە!');
+    $('stepLogin').hidden=true;$('stepLink').hidden=false;
+    $('aUrl').value=cfg.url||'';
+    $('tokBox').hidden=!!store.get('gh_tok');
+    $('repoBox').hidden=!!detectRepo();$('aRepo').value=detectRepo();
+  });
+};
+$('aPass').addEventListener('keydown',function(e){if(e.key==='Enter')$('aLogin').click()});
 
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
 $('aSave').onclick=function(){
-  var tok=$('aTok').value.trim(),repo=$('aRepo').value.trim().replace(/^https?:\/\/github\.com\//,'').replace(/\/$/,'');
+  var tok=store.get('gh_tok')||$('aTok').value.trim();
+  var repo=detectRepo()||$('aRepo').value.trim();
   var url=normalize($('aUrl').value);
-  if(!tok||!/^[^\/\s]+\/[^\/\s]+$/.test(repo))return msg('Token و ڕیپۆ (owner/repo) پڕبکەرەوە.','err');
-  if(!/^https:\/\//.test(url))return msg('لینکەکە دەبێت بە https:// دەست پێبکات.','err');
-  var body={url:url,version:$('aVer').value.trim(),notes:$('aNotes').value.trim(),updated:new Date().toISOString()};
+  if(!/^https:\/\//.test(url))return say('aMsg','لینکەکە دەبێت بە https:// دەست پێبکات.');
+  if(!tok)return say('aMsg','Token پێویستە (یەکجار).');
+  if(!/^[^\/\s]+\/[^\/\s]+$/.test(repo))return say('aMsg','ڕیپۆ دیاری بکە.');
+  var body={url:url,version:cfg.version||'',notes:cfg.notes||'',updated:new Date().toISOString()};
   var api='https://api.github.com/repos/'+repo+'/contents/link.json';
   var h={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
-  $('aSave').disabled=true;msg('...خەریکی تۆمارکردنە','ok');
+  $('aSave').disabled=true;say('aMsg','...خەریکی تۆمارکردنە',true);
   fetch(api,{headers:h,cache:'no-store'}).then(function(r){
     if(r.status===404)return null;
     if(!r.ok)throw new Error(r.status===401||r.status===403?'Token هەڵەیە یان مۆڵەتی Contents: write نییە.':'هەڵە '+r.status);
@@ -115,10 +137,10 @@ $('aSave').onclick=function(){
     return fetch(api,{method:'PUT',headers:h,body:JSON.stringify(p)});
   }).then(function(r){
     if(!r.ok)throw new Error(r.status===404?'ڕیپۆ نەدۆزرایەوە (یان Token مۆڵەتی نییە).':'هەڵە '+r.status);
-    store.set('gh_tok',tok);store.set('gh_repo',repo);
+    store.set('gh_tok',tok);store.set('gh_repo',repo);$('tokBox').hidden=true;
     cfg=body;applyCfg();
-    msg('تۆمار کرا ✓ — دوای نزیکەی ١ خولەک بۆ هەموو کەس دەگۆڕێت.','ok');
-  }).catch(function(e){msg(e.message||'هەڵەیەک ڕوویدا.','err')})
+    say('aMsg','تۆمار کرا ✓ — دوای نزیکەی ١ خولەک بۆ هەموو کەس دەگۆڕێت.',true);
+  }).catch(function(e){say('aMsg',e.message||'هەڵەیەک ڕوویدا.')})
     .then(function(){$('aSave').disabled=false});
 };
 
