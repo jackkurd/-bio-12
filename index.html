@@ -1,134 +1,297 @@
 <!DOCTYPE html>
-<html lang="ckb" dir="rtl">
+<html lang="ku" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#12151b">
-<title>زیندەزانی پۆلی 12</title>
-<meta name="description" content="بەرنامەی زیندەزانی پۆلی 12 — وانە، وێنە، ئەنیمەیشن، تاقیکردنەوە و پرسیاری وەزاری لە یەک شوێندا.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زیندەزانی پۆلی 12 — بەرنامەی ئەندرۆید</title>
+    <meta name="description" content="بەرنامەی زیندەزانی پۆلی 12، مەلزەمەی م. هۆشیار حسن — وانە، وێنە، ئەنیمەیشن و پرسیاری وەزاری لە یەک بەرنامەدا.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Barkrdni Fonti Speda */
+        @font-face {
+            font-family: 'Speda';
+            src: url('Speda-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* ڕێکخستنی گشتی */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Speda', sans-serif;
+            background: #0a1e3d;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND ANIMATION --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a1e3d 0%, #123456 50%, #1e4d7a 100%);
+            pointer-events: none;
+        }
+
+        .geometric-shape { position: absolute; opacity: 0.3; will-change: transform; }
+        .triangle { width: 0; height: 0; border-style: solid; }
+        .circle { border-radius: 50%; background: #2196F3; }
+
+        /* Animation Keyframes & Shapes */
+        .triangle-1 { border-width: 0 40px 70px 40px; border-color: transparent transparent #2196F3 transparent; top: 5%; left: 5%; animation: float-shape 15s ease-in-out infinite; }
+        .triangle-2 { border-width: 60px 35px 0 35px; border-color: #42a5f5 transparent transparent transparent; top: 15%; right: 8%; animation: float-shape 18s ease-in-out infinite reverse; }
+        .triangle-3 { border-width: 0 30px 50px 30px; border-color: transparent transparent #64b5f6 transparent; bottom: 10%; left: 8%; animation: float-shape 20s ease-in-out infinite; }
+        .triangle-4 { border-width: 50px 30px 0 30px; border-color: #1976d2 transparent transparent transparent; bottom: 5%; right: 5%; animation: float-shape 17s ease-in-out infinite reverse; }
+        .triangle-outline-1 { border-width: 0 35px 60px 35px; border-color: transparent transparent transparent transparent; border-bottom-color: #90caf9; border-style: solid; top: 60%; right: 15%; animation: rotate-shape 30s linear infinite; }
+        .triangle-outline-2 { border-width: 45px 25px 0 25px; border-color: transparent transparent transparent transparent; border-top-color: #64b5f6; border-style: solid; top: 70%; left: 12%; animation: rotate-shape 35s linear infinite reverse; }
+        .circle-1 { width: 60px; height: 60px; top: 25%; left: 15%; background: rgba(33, 150, 243, 0.3); animation: pulse-shape 8s ease-in-out infinite; }
+        .circle-2 { width: 40px; height: 40px; top: 45%; right: 20%; background: rgba(66, 165, 245, 0.25); animation: pulse-shape 10s ease-in-out infinite; }
+        .circle-3 { width: 50px; height: 50px; bottom: 25%; left: 20%; background: rgba(100, 181, 246, 0.25); animation: pulse-shape 12s ease-in-out infinite; }
+        .circle-4 { width: 35px; height: 35px; top: 35%; left: 8%; background: rgba(144, 202, 249, 0.2); animation: pulse-shape 9s ease-in-out infinite; }
+        .circle-5 { width: 45px; height: 45px; bottom: 40%; right: 12%; background: rgba(25, 118, 210, 0.25); animation: pulse-shape 11s ease-in-out infinite; }
+        .diagonal-line { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(33, 150, 243, 0.4), transparent); opacity: 0.3; }
+        .line-1 { width: 200px; top: 8%; right: 5%; transform: rotate(-35deg); animation: slide-line 16s ease-in-out infinite; }
+        .line-2 { width: 250px; top: 12%; left: 10%; transform: rotate(-35deg); animation: slide-line 18s ease-in-out infinite reverse; }
+        .line-3 { width: 180px; bottom: 15%; right: 8%; transform: rotate(-35deg); animation: slide-line 20s ease-in-out infinite; }
+        .line-4 { width: 220px; bottom: 8%; left: 5%; transform: rotate(-35deg); animation: slide-line 17s ease-in-out infinite reverse; }
+
+        @keyframes float-shape { 0%, 100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(15px, -15px, 0); } }
+        @keyframes pulse-shape { 0%, 100% { transform: scale(1); opacity: 0.25; } 50% { transform: scale(1.1); opacity: 0.35; } }
+        @keyframes rotate-shape { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes slide-line { 0%, 100% { transform: translateX(0) rotate(-35deg); opacity: 0.2; } 50% { transform: translateX(20px) rotate(-35deg); opacity: 0.4; } }
+
+        /* --- Container --- */
+        .container { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* --- Hero Section --- */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 3rem 0; }
+        
+        /* GORANKARI: white-space: nowrap BO NAHESHTNI DABAZIN */
+        .hero-title { 
+            font-size: 4rem; 
+            font-weight: 900; 
+            margin-bottom: 0.5rem; 
+            background: linear-gradient(135deg, #00bfff 0%, #1e90ff 50%, #4169e1 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            animation: glow 3s ease-in-out infinite alternate; 
+            text-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
+            white-space: nowrap; /* ئەم کۆدە ناهێڵێت ناوەکە ببێت بە دوو بەش */
+        }
+        
+        @keyframes glow { from { filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.3)); } to { filter: drop-shadow(0 0 20px rgba(30, 144, 255, 0.5)); } }
+        .hero-slogan { font-size: 1.3rem; font-weight: 600; color: #e0f7ff; margin-bottom: 1.5rem; max-width: 600px; }
+
+        .app-icon-section { margin: 1.5rem 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .app-icon { width: 110px; height: 110px; border-radius: 28px; box-shadow: 0 15px 40px rgba(30, 144, 255, 0.4); animation: icon-float 3s ease-in-out infinite; object-fit: cover; border: 3px solid rgba(30, 144, 255, 0.4); }
+        @keyframes icon-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .app-icon-title { font-size: 1.3rem; font-weight: 700; color: #00bfff; }
+
+        .phone-mockup { width: 250px; height: 500px; background: linear-gradient(135deg, #1a3a52 0%, #2a4a6e 100%); border-radius: 35px; margin: 1.5rem auto; padding: 1rem; box-shadow: 0 20px 50px rgba(0, 50, 100, 0.4); position: relative; display: flex; justify-content: center; align-items: center; border: 2px solid rgba(30, 144, 255, 0.4); animation: phone-float 3s ease-in-out infinite; }
+        @keyframes phone-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .phone-mockup::before { content: ''; position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 80px; height: 20px; background: #0a1929; border-radius: 0 0 15px 15px; box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.5); }
+        .phone-screen { width: 100%; height: 100%; background: #000; border-radius: 25px; overflow: hidden; }
+        .phone-app-image { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- Download Button --- */
+        .download-btn { padding: 1rem 3rem; font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #0096ff 0%, #1e90ff 50%, #4169e1 100%); border: none; border-radius: 50px; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 0.8rem; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(30, 144, 255, 0.4); margin-top: 1.5rem; font-family: 'Speda', sans-serif; position: relative; overflow: hidden; }
+        .download-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(30, 144, 255, 0.6); }
+
+        /* --- FEATURES --- */
+        .features { padding: 4rem 0; background: rgba(10, 30, 60, 0.5); border-top: 1px solid rgba(30, 144, 255, 0.1); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
+        .feature-card { text-align: center; padding: 2rem 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.05); position: relative; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; transform-style: preserve-3d; perspective: 1000px; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 20px; padding: 2px; background: linear-gradient(45deg, transparent, #00bfff, transparent); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.4s ease; }
+        .feature-card:hover { transform: translateY(-10px) scale(1.02); background: rgba(10, 30, 60, 0.8); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-icon { font-size: 2.5rem; background: linear-gradient(135deg, #0096ff 0%, #1e90ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; display: inline-block; transition: transform 0.4s ease; }
+        .feature-card:hover .feature-icon { transform: scale(1.2) rotateY(180deg); }
+        .feature-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem; color: #fff; }
+        .feature-description { font-size: 1rem; color: #b3d9ff; line-height: 1.6; }
+
+        /* --- About Section --- */
+        .about { padding: 4rem 0; background: rgba(5, 20, 40, 0.3); }
+        .about-card { max-width: 800px; margin: 0 auto; padding: 2.5rem; background: linear-gradient(135deg, rgba(10, 30, 60, 0.6) 0%, rgba(15, 40, 80, 0.5) 100%); border-radius: 25px; border: 1px solid rgba(30, 144, 255, 0.2); text-align: center; }
+        .profile-pic { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem; border: 3px solid rgba(30, 144, 255, 0.5); box-shadow: 0 10px 30px rgba(30, 144, 255, 0.2); }
+        .about-title { font-size: 1.5rem; color: #00bfff; margin-bottom: 0.5rem; font-weight: 700; }
+        .developer-name { font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, #00bfff 0%, #1e90ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .about-description { font-size: 1rem; color: #b3d9ff; line-height: 1.7; margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; text-align: right; }
+        .info-section { background: rgba(10, 30, 60, 0.4); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(30, 144, 255, 0.2); }
+        .info-title { font-size: 1.1rem; font-weight: 700; color: #00bfff; margin-bottom: 1rem; display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; }
+        .info-list { list-style: none; color: #b3d9ff; }
+        .info-list li { padding: 0.5rem 0; font-size: 1rem; border-bottom: 1px solid rgba(30, 144, 255, 0.1); }
+        .telegram-btn { display: inline-flex; align-items: center; gap: 0.8rem; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #0088cc 0%, #0096ff 100%); color: white; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3); font-family: 'Speda', sans-serif; }
+        .telegram-btn:hover { transform: translateY(-3px) scale(1.05); background: linear-gradient(135deg, #0096ff 0%, #00bfff 100%); }
+        footer { padding: 1.5rem 0; text-align: center; background: rgba(5, 15, 30, 0.5); border-top: 1px solid rgba(30, 144, 255, 0.2); color: #b3d9ff; font-size: 0.9rem; position: relative; }
+
+        /* --- ADMIN PANEL STYLES --- */
+        .admin-trigger { position: absolute; bottom: 20px; right: 20px; color: rgba(255, 255, 255, 0.2); cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .admin-trigger:hover { color: #00bfff; }
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .admin-content { background: #0f2a4a; padding: 2rem; border-radius: 20px; border: 2px solid #00bfff; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(0, 191, 255, 0.3); }
+        .admin-input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #1e90ff; background: #0a1e3d; color: white; font-family: 'Speda', sans-serif; text-align: center; }
+        .admin-btn { background: #00bfff; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-family: 'Speda', sans-serif; }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { 
+                font-size: 2.2rem; /* فۆنتەکە کەمێک بچوککرایەوە بۆ مۆبایل تا لە یەک دێڕ جێی بێتەوە */
+            } 
+            .phone-mockup { width: 220px; height: 440px; } 
+            .download-btn { font-size: 1.1rem; padding: 0.9rem 2.5rem; } 
+            .feature-card { padding: 1.5rem; } 
+            .container { padding: 0 1rem; } 
+        }
+        @media (max-width: 480px) { 
+            .hero-title { 
+                font-size: 2rem; /* بچوکتر بۆ مۆبایلی زۆر بچوک */
+            } 
+            .app-icon { width: 90px; height: 90px; } 
+            .phone-mockup { width: 200px; height: 400px; } 
+            .download-btn { font-size: 1rem; padding: 0.8rem 2rem; } 
+        }
+    
+        /* --- زیادکراوەکان --- */
+        .app-icon { display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1e4d7a,#0a1e3d); color:#90caf9; }
+        .app-icon svg { width:62%; height:62%; }
+        .phone-app-image { transition: opacity .5s; }
+        .progress { height:10px; width:min(320px,80vw); border-radius:6px; background:rgba(255,255,255,.12); margin:1.2rem auto 0; overflow:hidden; }
+        .bar { height:100%; width:0; background:linear-gradient(90deg,#00bfff,#4169e1); transition:width .15s; }
+        .hint { color:#b3d9ff; font-size:.95rem; margin-top:.6rem; min-height:1.2em; }
+        .chip { display:inline-block; margin-top:.8rem; padding:2px 14px; border-radius:999px; background:rgba(30,144,255,.2); color:#90caf9; font-size:.85rem; }
+        .join { position:relative; z-index:1; text-align:center; padding:1rem; background:rgba(10,30,60,.85); border-bottom:1px solid rgba(30,144,255,.4); }
+        .join .code { font-size:1.6rem; letter-spacing:4px; color:#00bfff; direction:ltr; margin:.3rem 0 .8rem; }
+        .join .download-btn { margin-top:0; }
+        .admin-content { max-height:92vh; overflow:auto; text-align:right; }
+        .admin-content h3 { text-align:center; margin-bottom:.5rem; }
+        .admin-content label { display:block; font-size:.85rem; color:#90caf9; margin-top:.6rem; }
+        .admin-input { text-align:left; direction:ltr; }
+        .admin-input.rtl { text-align:right; direction:rtl; }
+        .admin-msg { margin-top:.8rem; font-size:.9rem; }
+        .admin-btns { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:1rem; }
+        .admin-btn.sec { background:transparent; border:1px solid #1e90ff; }
+        [hidden] { display:none !important; }
+</style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="logo" viewBox="0 0 48 48"><circle cx="18" cy="20" r="13" fill="currentColor"/><circle cx="35" cy="30" r="7" fill="currentColor" opacity=".85"/><circle cx="31" cy="11" r="5" fill="currentColor" opacity=".7"/></symbol>
-</svg>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="logo" viewBox="0 0 48 48"><circle cx="18" cy="20" r="13" fill="currentColor"/><circle cx="35" cy="30" r="7" fill="currentColor" opacity=".85"/><circle cx="31" cy="11" r="5" fill="currentColor" opacity=".7"/></symbol>
+    </svg>
 
-<div class="wrap">
-  <header class="top">
-    <div class="brand" id="logoBtn"><svg class="logo"><use href="#logo"/></svg><span>زیندەزانی 12</span></div>
-    <button class="icon-btn" id="themeBtn" aria-label="دۆخی ڕووناک/تاریک">🌓</button>
-  </header>
-
-  <main>
-    <!-- بانگێشتی گروپ (تەنها کاتێک لینکی بانگێشت بەکاردێت دەردەکەوێت) -->
-    <section id="join" class="card join" hidden>
-      <h3>بەشداربە لە گروپ</h3>
-      <p class="code" id="joinCode"></p>
-      <a class="btn primary" id="joinOpen" href="#">کردنەوە لە بەرنامە</a>
-    </section>
-
-    <!-- سەرەکی -->
-    <section id="home" class="hero">
-      <h1>زیندەزانی پۆلی 12</h1>
-      <h2>مەلزەمەی م. هۆشیار حسن</h2>
-      <p class="lead">هەموو ئەوەی بۆ خوێندن و ئامادەبوون بۆ تاقیکردنەوەی وەزاری پێویستە، لە یەک شوێندا: وانە، وێنە، ئەنیمەیشن و پرسیار.</p>
-      <button class="btn primary big" id="dlBtn"><span id="dlText">دابەزاندنی بەرنامە</span></button>
-      <div class="progress" id="pb" hidden><div class="bar" id="bar"></div></div>
-      <p class="hint" id="pt"></p>
-      <p class="chip" id="verChip" hidden></p>
-    </section>
-
-    <section class="card count">
-      <h3>کاتی ماوە بۆ تاقیکردنەوەی وەزاری زیندەزانی</h3>
-      <p class="muted">دووشەممە 31/5/2027 · 08:00</p>
-      <div class="units">
-        <div><b id="cd">0</b><span>ڕۆژ</span></div>
-        <div><b id="ch">0</b><span>کاتژمێر</span></div>
-        <div><b id="cm">0</b><span>خولەک</span></div>
-        <div><b id="cs">0</b><span>چرکە</span></div>
-      </div>
-    </section>
-
-    <!-- تایبەتمەندییەکان -->
-    <section id="features">
-      <h2 class="sec">لە ناو بەرنامەکە چی هەیە؟</h2>
-      <div class="grid">
-        <article class="tile accent"><i>📖</i><h4>بەندەکان</h4><p>هەموو بەندەکانی کتێب بە کەرت و بابەت</p></article>
-        <article class="tile"><i>🖼️</i><h4>وێنەکان</h4><p>وێنەکانی کتێب بە ڕوونی، بە زووم</p></article>
-        <article class="tile"><i>▶️</i><h4>ئەنیمەیشن</h4><p>ئەنیمەیشن بۆ تێگەیشتنی ئاسانتر</p></article>
-        <article class="tile"><i>📝</i><h4>تاقیکردنەوەکان</h4><p>پرسیار لە بەند و کەرتەکان هەڵبژێرە</p></article>
-        <article class="tile"><i>🗂️</i><h4>فلاشکارد</h4><p>دووبارەکردنەوەی خێرا بە کارتی پرسیار و وەڵام</p></article>
-        <article class="tile"><i>📋</i><h4>پرسیاری وەزاری</h4><p>پرسیاری ساڵانی ڕابردوو بە خول و وێنە و خشتەکان</p></article>
-        <article class="tile"><i>🔥</i><h4>ڕۆژانە و ئامار</h4><p>پرسیاری ڕۆژ، ڕۆژی لەسەریەک و لاوازترین بەشەکان</p></article>
-        <article class="tile"><i>🏆</i><h4>پێشبڕکێ</h4><p>خاڵ کۆبکەرەوە، پلە بەرز بکەرەوە و ببە لە باشترینەکان</p></article>
-        <article class="tile"><i>⚔️</i><h4>پێشبڕکێی دوو کەسی</h4><p>هاوڕێیەک بانگ بکە و هەمان ١٠ پرسیار وەڵام بدەن</p></article>
-        <article class="tile"><i>⏱️</i><h4>تایمەری خوێندن</h4><p>٢٥ خولەک خوێندن و ئاماری هەفتانە</p></article>
-        <article class="tile"><i>🏅</i><h4>مەدالیاکان</h4><p>بۆ ڕۆژ، پرسیار، پلە و براوەکان</p></article>
-        <article class="tile"><i>💬</i><h4>چات</h4><p>گفتوگۆ لەگەڵ هاوپۆلەکانت</p></article>
-      </div>
-    </section>
-
-    <!-- دابەزاندن -->
-    <section id="get" class="card">
-      <h2 class="sec">چۆن دایبمەزرێنم؟</h2>
-      <ol class="steps">
-        <li>دوگمەی <b>دابەزاندن</b> دابگرە و چاوەڕێ بە تا فایلەکە تەواو دەبێت.</li>
-        <li>فایلەکە بکەرەوە. ئەگەر مۆبایلەکەت پرسی، ڕێگە بدە بە <b>دامەزراندن لە ئەم سەرچاوەیە</b>.</li>
-        <li>دامەزراندن بکە و بەرنامەکە بکەرەوە — خوێندنت دەست پێ بکە.</li>
-      </ol>
-      <button class="btn primary" id="dlBtn2">دابەزاندنی بەرنامە</button>
-      <p class="muted small">تایبەت بە ئەندرۆید (APK)</p>
-    </section>
-
-    <!-- دەربارە -->
-    <section id="about" class="card about">
-      <svg class="logo big"><use href="#logo"/></svg>
-      <h3>زیندەزانی پۆلی 12</h3>
-      <p class="muted">مەلزەمەی م. هۆشیار حسن</p>
-      <p class="muted">دروستکراوە لەلایەن Jack</p>
-      <div class="social">
-        <a href="https://t.me/j4ck_721" target="_blank" rel="noopener">تێلیگرام</a>
-        <a href="https://youtube.com/@j4ck_721s?si=1nM3JycZab2CD5dV" target="_blank" rel="noopener">یوتیوب</a>
-        <a href="https://www.snapchat.com/add/j4ck_721?share_id=8X2GFEWOdEA&locale=en-US" target="_blank" rel="noopener">سناپچات</a>
-      </div>
-      <p class="muted small">© 2026 هەموو مافێکی پارێزراوە</p>
-    </section>
-  </main>
-
-  <nav class="dock">
-    <a href="#home" class="active" data-s="home"><b>⌂</b><span>سەرەکی</span></a>
-    <a href="#features" data-s="features"><b>✦</b><span>تایبەتمەندی</span></a>
-    <a href="#get" data-s="get"><b>⭳</b><span>دابەزاندن</span></a>
-    <a href="#about" data-s="about"><b>ⓘ</b><span>دەربارە</span></a>
-  </nav>
-</div>
-
-<!-- بەشی شاراوە: تەنها خاوەنی وێبسایت (بە GitHub Token) -->
-<div class="modal" id="admin" hidden>
-  <div class="sheet">
-    <h3>پانێلی خاوەن</h3>
-    <label>GitHub Token</label>
-    <input id="aTok" type="password" autocomplete="off" placeholder="github_pat_...">
-    <label>ڕیپۆ (owner/repo)</label>
-    <input id="aRepo" dir="ltr" placeholder="username/-bio-12">
-    <label>لینکی نوێی بەرنامە</label>
-    <input id="aUrl" dir="ltr" placeholder="https://...">
-    <label>ژمارەی وەشان (هەڵبژاردەیی)</label>
-    <input id="aVer" dir="ltr" placeholder="1.2">
-    <label>تێبینی نوێکردنەوە (هەڵبژاردەیی)</label>
-    <input id="aNotes" placeholder="چی نوێ بووە؟">
-    <p class="small muted">Token تەنها لەسەر ئەم ئامێرەی تۆ هەڵدەگیرێت. دوای پاشەکەوتکردن نزیکەی ١ خولەک دەخایەنێت تا هەموو کەس لینکە نوێیەکە ببینێت.</p>
-    <p id="aMsg" class="msg" hidden></p>
-    <div class="row">
-      <button class="btn primary" id="aSave">پاشەکەوتکردن</button>
-      <button class="btn" id="aForget">لابردنی Token</button>
-      <button class="btn" id="aClose">داخستن</button>
+    <div class="bg-animation">
+        <div class="geometric-shape triangle triangle-1"></div>
+        <div class="geometric-shape triangle triangle-3"></div>
+        <div class="geometric-shape triangle triangle-outline-1"></div>
+        <div class="geometric-shape circle circle-1"></div>
+        <div class="geometric-shape circle circle-3"></div>
+        <div class="geometric-shape circle circle-5"></div>
+        <div class="diagonal-line line-1"></div>
+        <div class="diagonal-line line-3"></div>
     </div>
-  </div>
-</div>
 
-<script src="script.js"></script>
+    <!-- بانگێشتی گروپ (تەنها بە لینکی بانگێشت دەردەکەوێت) -->
+    <div class="join" id="join" hidden>
+        <h3>بەشداربە لە گروپ</h3>
+        <p class="code" id="joinCode"></p>
+        <a class="download-btn" id="joinOpen" href="#"><i class="fas fa-arrow-up-right-from-square"></i> کردنەوە لە بەرنامە</a>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">زیندەزانی پۆلی 12</h1>
+            <p class="hero-slogan">مەلزەمەی م. هۆشیار حسن — هەموو ئەوەی بۆ ئامادەبوون بۆ تاقیکردنەوەی وەزاری پێویستە، لە یەک بەرنامەدا</p>
+
+            <div class="app-icon-section">
+                <div class="app-icon-container">
+                    <div class="app-icon" id="appIcon"><svg><use href="#logo"/></svg></div>
+                </div>
+                <h3 class="app-icon-title">زیندەزانی 12</h3>
+            </div>
+
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <img src="img/hero.jpg" alt="زیندەزانی 12" class="phone-app-image" id="phoneImg" />
+                </div>
+            </div>
+
+            <button class="download-btn" id="mainDownloadBtn">
+                <i class="fas fa-download"></i>
+                دابەزاندنی بەرنامە
+            </button>
+            <div class="progress" id="pb" hidden><div class="bar" id="bar"></div></div>
+            <p class="hint" id="pt"></p>
+            <span class="chip" id="verChip" hidden></span>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-book-open"></i></div><h3 class="feature-title">هەموو بەندەکان</h3><p class="feature-description">وانەکان بە کەرت و بابەت، ڕێکخراو و ئاسان</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-images"></i></div><h3 class="feature-title">وێنە و ئەنیمەیشن</h3><p class="feature-description">بۆ تێگەیشتنی ئاسانتر، لەگەڵ زووم لەسەر وێنەکان</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-clipboard-check"></i></div><h3 class="feature-title">تاقیکردنەوە و وەزاری</h3><p class="feature-description">پرسیاری ساڵانی ڕابردوو و تاقیکردنەوەی بەند و کەرتەکان</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-clone"></i></div><h3 class="feature-title">فلاشکارد</h3><p class="feature-description">دووبارەکردنەوەی خێرا بە کارتی پرسیار و وەڵام</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3 class="feature-title">پێشبڕکێ و مەدالیا</h3><p class="feature-description">خاڵ کۆبکەرەوە و لەگەڵ هاوڕێکەت پێشبڕکێ بکە</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-stopwatch"></i></div><h3 class="feature-title">تایمەر و ئامار</h3><p class="feature-description">کاتی خوێندن ڕێکبخە و لاوازترین بەشەکانت بزانە</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <div class="about-card">
+                <img src="JACK.png" alt="JACK" class="profile-pic" onerror="this.style.display='none'" />
+                <h2 class="about-title">دەربارەی گەشەپێدەر</h2>
+                <h3 class="developer-name">JACK</h3>
+                <p class="about-description">سڵاو! من جاکم - خولیای تەکنەلۆژیا و دروستکردنی بۆت، ماڵپەڕ، و ئامرازەکانی تێلێگرام. حەزم لە فێربوون و دروستکردنی پرۆژەی نوێیە</p>
+                <a href="https://t.me/JACK_721_MOD" class="telegram-btn" target="_blank" rel="noopener"><i class="fab fa-telegram"></i> تێلێگرام</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 JACK. All rights reserved.</p>
+            <i class="fas fa-lock admin-trigger" id="lockBtn"></i>
+        </div>
+    </footer>
+
+    <div class="admin-modal" id="adminModal">
+        <div class="close-modal" id="aX">&times;</div>
+        <div class="admin-content">
+            <h3>بەڕێوەبردنی بەستەر</h3>
+            <label>GitHub Token</label>
+            <input type="password" id="aTok" class="admin-input" autocomplete="off" placeholder="github_pat_...">
+            <label>ڕیپۆ (owner/repo)</label>
+            <input type="text" id="aRepo" class="admin-input" placeholder="username/-bio-12">
+            <label>لینکی نوێی بەرنامە</label>
+            <input type="text" id="aUrl" class="admin-input" placeholder="https://...">
+            <label>ژمارەی وەشان (هەڵبژاردەیی)</label>
+            <input type="text" id="aVer" class="admin-input" placeholder="1.2">
+            <label>تێبینی نوێکردنەوە (هەڵبژاردەیی)</label>
+            <input type="text" id="aNotes" class="admin-input rtl" placeholder="چی نوێ بووە؟">
+            <p class="admin-msg" id="aMsg" hidden></p>
+            <div class="admin-btns">
+                <button class="admin-btn" id="aSave">تۆمارکردن</button>
+                <button class="admin-btn sec" id="aForget">لابردنی Token</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

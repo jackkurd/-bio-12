@@ -7,35 +7,6 @@ var store={
   del:function(k){try{localStorage.removeItem(k)}catch(e){}}
 };
 
-/* ---------- ڕووناک / تاریک ---------- */
-if(store.get('theme')==='light')document.body.classList.add('light');
-$('themeBtn').onclick=function(){
-  document.body.classList.toggle('light');
-  store.set('theme',document.body.classList.contains('light')?'light':'dark');
-};
-
-/* ---------- ژمێرەری تاقیکردنەوە ---------- */
-var EXAM=new Date(2027,4,31,8,0,0).getTime();
-function tick(){
-  var d=Math.max(0,EXAM-Date.now()),s=Math.floor(d/1000);
-  $('cd').textContent=Math.floor(s/86400);
-  $('ch').textContent=Math.floor(s%86400/3600);
-  $('cm').textContent=Math.floor(s%3600/60);
-  $('cs').textContent=s%60;
-}
-tick();setInterval(tick,1000);
-
-/* ---------- دۆک (dock) ---------- */
-var links=document.querySelectorAll('.dock a');
-if('IntersectionObserver' in window){
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){if(e.isIntersecting){
-      links.forEach(function(a){a.classList.toggle('active',a.dataset.s===e.target.id)});
-    }});
-  },{rootMargin:'-40% 0px -55% 0px'});
-  ['home','features','get','about'].forEach(function(id){io.observe($(id))});
-}
-
 /* ---------- لینکی بەرنامە ---------- */
 var FILE_NAME='زیندەزانی پۆلی 12.apk';
 var DEFAULT_URL='https://www.dropbox.com/scl/fi/fghrzfbhfakaxjv3flxdk/12.apk?rlkey=funqbl5xqvf18g45a4vigxnnj&st=y2fxhq0s&dl=1';
@@ -95,7 +66,7 @@ function startDownload(e){
     }).catch(function(){busy=false;frameDownload(u);});
   });
 }
-$('dlBtn').onclick=startDownload;$('dlBtn2').onclick=startDownload;
+$('mainDownloadBtn').onclick=startDownload;
 
 /* ---------- بانگێشتی گروپ ---------- */
 var q=new URLSearchParams(location.search);
@@ -111,24 +82,17 @@ if(code.length==8){
 if(q.get('dl')==='1'){startDownload();}
 
 /* ---------- بەشی شاراوەی خاوەن ---------- */
-var taps=0,tapT=0;
-$('logoBtn').onclick=function(){
-  var n=Date.now();taps=(n-tapT<1500)?taps+1:1;tapT=n;
-  if(taps>=5){taps=0;openAdmin()}
-};
-if(location.hash==='#admin')openAdmin();
-window.addEventListener('hashchange',function(){if(location.hash==='#admin')openAdmin()});
-
-function msg(t,type){var m=$('aMsg');m.textContent=t;m.className='msg '+(type||'');m.hidden=!t}
+var modal=$('adminModal');
+function msg(t,type){var m=$('aMsg');m.textContent=t;m.style.color=type==='ok'?'#4dd0b0':'#ff7a7a';m.hidden=!t}
 function openAdmin(){
   $('aTok').value=store.get('gh_tok')||'';
   $('aRepo').value=store.get('gh_repo')||'';
-  $('aUrl').value=cfg.url||'';
-  $('aVer').value=cfg.version||'';
-  $('aNotes').value=cfg.notes||'';
-  msg('');$('admin').hidden=false;
+  $('aUrl').value=cfg.url||'';$('aVer').value=cfg.version||'';$('aNotes').value=cfg.notes||'';
+  msg('');modal.style.display='flex';
 }
-$('aClose').onclick=function(){$('admin').hidden=true;if(location.hash==='#admin')history.replaceState(null,'',location.pathname+location.search)};
+function closeAdmin(){modal.style.display='none'}
+$('lockBtn').onclick=openAdmin;$('aX').onclick=closeAdmin;
+if(location.hash==='#admin')openAdmin();
 $('aForget').onclick=function(){store.del('gh_tok');$('aTok').value='';msg('Token لابرا لەسەر ئەم ئامێرە.','ok')};
 
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
@@ -140,21 +104,28 @@ $('aSave').onclick=function(){
   var body={url:url,version:$('aVer').value.trim(),notes:$('aNotes').value.trim(),updated:new Date().toISOString()};
   var api='https://api.github.com/repos/'+repo+'/contents/link.json';
   var h={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
-  $('aSave').disabled=true;msg('...خەریکی پاشەکەوتکردنە');
+  $('aSave').disabled=true;msg('...خەریکی تۆمارکردنە','ok');
   fetch(api,{headers:h,cache:'no-store'}).then(function(r){
     if(r.status===404)return null;
-    if(!r.ok)throw new Error(r.status===401||r.status===403?'Token هەڵەیە یان ڕێگەپێدانی Contents: write نییە.':'هەڵە '+r.status);
+    if(!r.ok)throw new Error(r.status===401||r.status===403?'Token هەڵەیە یان مۆڵەتی Contents: write نییە.':'هەڵە '+r.status);
     return r.json();
   }).then(function(cur){
     var p={message:'update app link',content:b64(JSON.stringify(body,null,2)+'\n')};
     if(cur&&cur.sha)p.sha=cur.sha;
     return fetch(api,{method:'PUT',headers:h,body:JSON.stringify(p)});
   }).then(function(r){
-    if(!r.ok)throw new Error(r.status===404?'ڕیپۆ نەدۆزرایەوە (یان Token ڕێگەی پێ نەدراوە).':'هەڵە '+r.status);
+    if(!r.ok)throw new Error(r.status===404?'ڕیپۆ نەدۆزرایەوە (یان Token مۆڵەتی نییە).':'هەڵە '+r.status);
     store.set('gh_tok',tok);store.set('gh_repo',repo);
     cfg=body;applyCfg();
-    msg('پاشەکەوت کرا ✓ — دوای نزیکەی ١ خولەک لەسەر هەموو ئامێرەکان دەردەکەوێت.','ok');
+    msg('تۆمار کرا ✓ — دوای نزیکەی ١ خولەک بۆ هەموو کەس دەگۆڕێت.','ok');
   }).catch(function(e){msg(e.message||'هەڵەیەک ڕوویدا.','err')})
     .then(function(){$('aSave').disabled=false});
 };
+
+/* ---------- وێنەی مۆبایلەکە: گۆڕینی خۆکار ---------- */
+var shots=['hero','start','daily','pick','level','leaders','home','timer','medals'],si=0,pi=$('phoneImg');
+setInterval(function(){
+  si=(si+1)%shots.length;pi.style.opacity=0;
+  setTimeout(function(){pi.src='img/'+shots[si]+'.jpg';pi.style.opacity=1},400);
+},3500);
 })();
