@@ -114,8 +114,9 @@ h2 em{font-style:normal;color:var(--mint)}
 .dev p{color:var(--muted);max-width:520px;margin:0 auto 20px}
 
 footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px 0 40px;text-align:center;color:var(--muted);font-size:14px;background:rgba(7,19,21,.6)}
-.lock{position:absolute;bottom:24px;right:22px;width:22px;height:22px;color:rgba(234,255,248,.22);cursor:pointer;transition:.2s}
-.lock:hover{color:var(--mint)}
+.lock{position:absolute;bottom:8px;right:8px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:none;border:0;color:rgba(234,255,248,.3);cursor:pointer;touch-action:manipulation;z-index:5}
+.lock svg{width:22px;height:22px;pointer-events:none}
+.lock:active,.lock:hover{color:var(--mint)}
 
 /* ئەدمین */
 .modal{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
@@ -249,13 +250,13 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
     <small>دەربارەی گەشەپێدەر</small>
     <h3>ʏᴏᴜsυғ</h3>
     <p>سڵاو! من ʏᴏᴜsυғم — خولیای تەکنەلۆژیا و دروستکردنی بۆت، ماڵپەڕ و ئامرازەکانی تێلێگرام. حەزم لە فێربوون و دروستکردنی پرۆژەی نوێیە.</p>
-    <a class="btn" href="https://t.me/JACK_721_MOD" target="_blank" rel="noopener">تێلێگرام</a>
+    <a class="btn" href="https://t.me/JACK_721_MOD" target="_blank" rel="noopener"><svg><use href="#i-send"/></svg>تێلێگرام</a>
   </div>
 </div></section>
 
 <footer>
-  <p>© 2026 ʏᴏᴜsυғ. All rights reserved.</p>
-  <svg class="lock" id="lockBtn" viewBox="0 0 24 24" fill="currentColor"><path d="M17 9V7a5 5 0 0 0-10 0v2H5v12h14V9h-2zm-8-2a3 3 0 0 1 6 0v2H9V7z"/></svg>
+  <p id="copy">© 2026 ʏᴏᴜsυғ. All rights reserved.</p>
+  <button class="lock" id="lockBtn" type="button" aria-label="admin"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 9V7a5 5 0 0 0-10 0v2H5v12h14V9h-2zm-8-2a3 3 0 0 1 6 0v2H9V7z"/></svg></button>
 </footer>
 
 <div class="modal" id="adminModal">
@@ -275,6 +276,6 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding:26px
     <p class="msg" id="aMsg" hidden></p>
   </div>
 </div>
-<script src="script.js"></script>
+<script src="script.js?v=7"></script>
 </body>
 </html>

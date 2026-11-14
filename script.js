@@ -7,6 +7,7 @@ var store={
   del:function(k){try{localStorage.removeItem(k)}catch(e){}}
 };
 
+try{
 /* ---------- ئاشکراکردن لە کاتی سکڕۆڵ ---------- */
 var rv=document.querySelectorAll('.rv');
 if('IntersectionObserver' in window){
@@ -40,6 +41,8 @@ document.querySelectorAll('.card').forEach(function(c){
   }
   draw();
 })();
+
+}catch(e){}
 
 /* ---------- لینکی بەرنامە ---------- */
 var FILE_NAME='زیندەزانی پۆلی 12.apk';
@@ -137,7 +140,9 @@ function openAdmin(){
   else{$('stepLogin').hidden=false;$('stepLink').hidden=true}
 }
 function closeAdmin(){modal.style.display='none'}
-$('lockBtn').onclick=openAdmin;$('aX').onclick=closeAdmin;
+$('lockBtn').addEventListener('click',openAdmin);$('aX').addEventListener('click',closeAdmin);
+// ڕێگای دووەم: ٥ جار خێرا لەسەر نووسینی © دابگرە
+var ct=0,cT=0;$('copy').addEventListener('click',function(){var n=Date.now();ct=(n-cT<1500)?ct+1:1;cT=n;if(ct>=5){ct=0;openAdmin()}});
 if(location.hash==='#admin')openAdmin();
 $('aLogin').onclick=function(){
   sha($('aPass').value).then(function(h){
