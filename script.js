@@ -7,11 +7,48 @@ var store={
   del:function(k){try{localStorage.removeItem(k)}catch(e){}}
 };
 
+/* ---------- ئاشکراکردن لە کاتی سکڕۆڵ ---------- */
+var rv=document.querySelectorAll('.rv');
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.12});
+  rv.forEach(function(el,i){el.style.transitionDelay=(i%4)*70+'ms';io.observe(el)});
+}else rv.forEach(function(el){el.classList.add('on')});
+
+/* ---------- درەوشانەوەی کارتەکان ---------- */
+document.querySelectorAll('.card').forEach(function(c){
+  c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+});
+
+/* ---------- نووسینی بزوێنەر (marquee) ---------- */
+var words=['وانە','وێنە','ئەنیمەیشن','پرسیاری وەزاری','فلاشکارد','پێشبڕکێ','مەدالیا','تایمەری خوێندن','چات'];
+var mq=$('mq'),h='';for(var k=0;k<2;k++)words.concat(words).forEach(function(w){h+='<span>'+w+'</span>'});mq.innerHTML=h;
+
+/* ---------- DNA ---------- */
+(function(){
+  var svg=$('dna'),NS='http://www.w3.org/2000/svg',N=26,els=[],t=0;
+  for(var i=0;i<N;i++){
+    var l=document.createElementNS(NS,'line'),a=document.createElementNS(NS,'circle'),b=document.createElementNS(NS,'circle');
+    l.setAttribute('stroke','#2fd1a2');l.setAttribute('stroke-opacity','.35');l.setAttribute('stroke-width','2');
+    a.setAttribute('fill','#7bf5d2');b.setAttribute('fill','#2fd1a2');
+    svg.appendChild(l);svg.appendChild(a);svg.appendChild(b);els.push([l,a,b]);
+  }
+  function draw(){
+    t+=.018;
+    for(var i=0;i<N;i++){
+      var y=20+i*(580/(N-1)),s=Math.sin(t+i*.42),x1=100+s*70,x2=100-s*70,z=Math.cos(t+i*.42),e=els[i];
+      e[0].setAttribute('x1',x1);e[0].setAttribute('x2',x2);e[0].setAttribute('y1',y);e[0].setAttribute('y2',y);
+      e[1].setAttribute('cx',x1);e[1].setAttribute('cy',y);e[1].setAttribute('r',5+z*2.5);
+      e[2].setAttribute('cx',x2);e[2].setAttribute('cy',y);e[2].setAttribute('r',5-z*2.5);
+    }
+    if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 /* ---------- لینکی بەرنامە ---------- */
 var FILE_NAME='زیندەزانی پۆلی 12.apk';
 var DEFAULT_URL='https://www.dropbox.com/scl/fi/fghrzfbhfakaxjv3flxdk/12.apk?rlkey=funqbl5xqvf18g45a4vigxnnj&st=y2fxhq0s&dl=1';
 var cfg={url:DEFAULT_URL,version:'',notes:'',updated:''};
-
 function normalize(u){
   u=(u||'').trim();
   if(/^https?:\/\/(www\.)?dropbox\.com\//.test(u)){
@@ -20,16 +57,12 @@ function normalize(u){
   return u;
 }
 function directUrl(u){return u.replace('://www.dropbox.com','://dl.dropboxusercontent.com')}
-
 function applyCfg(){
   if(cfg.version){$('verChip').textContent='وەشان '+cfg.version+(cfg.notes?' · '+cfg.notes:'');$('verChip').hidden=false}
   else $('verChip').hidden=true;
 }
-function loadCfg(){
-  return fetch('link.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null})
-    .then(function(j){if(j&&j.url){cfg=j;} applyCfg();}).catch(function(){applyCfg();});
-}
-var ready=loadCfg();
+var ready=fetch('link.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null})
+  .then(function(j){if(j&&j.url)cfg=j;applyCfg()}).catch(applyCfg);
 
 /* ---------- داگرتن لە ناو هەمان لاپەڕە ---------- */
 var busy=false;
@@ -63,10 +96,10 @@ function startDownload(e){
     }).then(function(b){
       $('bar').style.width='100%';$('pt').textContent='تەواو بوو ✓ — فایلەکە بکەرەوە بۆ دامەزراندن';
       saveBlob(b);busy=false;
-    }).catch(function(){busy=false;frameDownload(u);});
+    }).catch(function(){busy=false;frameDownload(u)});
   });
 }
-$('mainDownloadBtn').onclick=startDownload;
+$('dlBtn').onclick=startDownload;$('dlBtn2').onclick=startDownload;
 
 /* ---------- بانگێشتی گروپ ---------- */
 var q=new URLSearchParams(location.search);
@@ -79,10 +112,9 @@ if(code.length==8){
   $('joinOpen').href=intent;
   if(/Android/i.test(navigator.userAgent)&&q.get('dl')!=='1'){setTimeout(function(){location.href=intent},300)}
 }
-if(q.get('dl')==='1'){startDownload();}
+if(q.get('dl')==='1'){startDownload()}
 
 /* ---------- بەشی شاراوەی خاوەن ---------- */
-// SHA-256ی پاسۆردەکە (پاسۆردەکە خۆی لێرە نانووسرێت)
 var PASS_HASH='5b2937a27bfd116b1069abaf4fb38f7cac40a0443b207a4dcd74f37a7defe04e';
 var modal=$('adminModal');
 function sha(s){
@@ -96,21 +128,25 @@ function detectRepo(){
   var m=location.hostname.match(/^([^.]+)\.github\.io$/),seg=location.pathname.split('/')[1];
   return (m&&seg)?m[1]+'/'+seg:(store.get('gh_repo')||'');
 }
+function showLink(){
+  $('stepLogin').hidden=true;$('stepLink').hidden=false;
+  $('aUrl').value=cfg.url||'';
+  $('tokBox').hidden=!!store.get('gh_tok');
+  $('repoBox').hidden=!!detectRepo();$('aRepo').value=detectRepo();
+}
 function openAdmin(){
-  $('stepLogin').hidden=false;$('stepLink').hidden=true;$('aPass').value='';say('aMsg1','');say('aMsg','');
+  say('aMsg1','');say('aMsg','');$('aPass').value='';
   modal.style.display='flex';
+  if(store.get('adm_ok')==='1'){showLink()}   // پاسۆرد یەکجار: لەسەر ئەم ئامێرە پاشەکەوت کراوە
+  else{$('stepLogin').hidden=false;$('stepLink').hidden=true}
 }
 function closeAdmin(){modal.style.display='none'}
 $('lockBtn').onclick=openAdmin;$('aX').onclick=closeAdmin;
 if(location.hash==='#admin')openAdmin();
-
 $('aLogin').onclick=function(){
   sha($('aPass').value).then(function(h){
     if(h!==PASS_HASH)return say('aMsg1','پاسۆرد هەڵەیە!');
-    $('stepLogin').hidden=true;$('stepLink').hidden=false;
-    $('aUrl').value=cfg.url||'';
-    $('tokBox').hidden=!!store.get('gh_tok');
-    $('repoBox').hidden=!!detectRepo();$('aRepo').value=detectRepo();
+    store.set('adm_ok','1');showLink();
   });
 };
 $('aPass').addEventListener('keydown',function(e){if(e.key==='Enter')$('aLogin').click()});
@@ -125,16 +161,16 @@ $('aSave').onclick=function(){
   if(!/^[^\/\s]+\/[^\/\s]+$/.test(repo))return say('aMsg','ڕیپۆ دیاری بکە.');
   var body={url:url,version:cfg.version||'',notes:cfg.notes||'',updated:new Date().toISOString()};
   var api='https://api.github.com/repos/'+repo+'/contents/link.json';
-  var h={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
+  var hd={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
   $('aSave').disabled=true;say('aMsg','...خەریکی تۆمارکردنە',true);
-  fetch(api,{headers:h,cache:'no-store'}).then(function(r){
+  fetch(api,{headers:hd,cache:'no-store'}).then(function(r){
     if(r.status===404)return null;
     if(!r.ok)throw new Error(r.status===401||r.status===403?'Token هەڵەیە یان مۆڵەتی Contents: write نییە.':'هەڵە '+r.status);
     return r.json();
   }).then(function(cur){
     var p={message:'update app link',content:b64(JSON.stringify(body,null,2)+'\n')};
     if(cur&&cur.sha)p.sha=cur.sha;
-    return fetch(api,{method:'PUT',headers:h,body:JSON.stringify(p)});
+    return fetch(api,{method:'PUT',headers:hd,body:JSON.stringify(p)});
   }).then(function(r){
     if(!r.ok)throw new Error(r.status===404?'ڕیپۆ نەدۆزرایەوە (یان Token مۆڵەتی نییە).':'هەڵە '+r.status);
     store.set('gh_tok',tok);store.set('gh_repo',repo);$('tokBox').hidden=true;
@@ -143,11 +179,4 @@ $('aSave').onclick=function(){
   }).catch(function(e){say('aMsg',e.message||'هەڵەیەک ڕوویدا.')})
     .then(function(){$('aSave').disabled=false});
 };
-
-/* ---------- وێنەی مۆبایلەکە: گۆڕینی خۆکار ---------- */
-var shots=['hero','start','daily','pick','level','leaders','home','timer','medals'],si=0,pi=$('phoneImg');
-setInterval(function(){
-  si=(si+1)%shots.length;pi.style.opacity=0;
-  setTimeout(function(){pi.src='img/'+shots[si]+'.jpg';pi.style.opacity=1},400);
-},3500);
 })();
