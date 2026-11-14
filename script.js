@@ -19,10 +19,6 @@ document.querySelectorAll('.card').forEach(function(c){
   c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
 });
 
-/* ---------- نووسینی بزوێنەر (marquee) ---------- */
-var words=['وانە','وێنە','ئەنیمەیشن','پرسیاری وەزاری','فلاشکارد','پێشبڕکێ','مەدالیا','تایمەری خوێندن','چات'];
-var mq=$('mq'),h='';for(var k=0;k<2;k++)words.concat(words).forEach(function(w){h+='<span>'+w+'</span>'});mq.innerHTML=h;
-
 /* ---------- DNA ---------- */
 (function(){
   var svg=$('dna'),NS='http://www.w3.org/2000/svg',N=26,els=[],t=0;
@@ -94,7 +90,7 @@ function startDownload(e){
         return pump();
       })})();
     }).then(function(b){
-      $('bar').style.width='100%';$('pt').textContent='تەواو بوو ✓ — فایلەکە بکەرەوە بۆ دامەزراندن';
+      $('bar').style.width='100%';$('pt').textContent='تەواو بوو — فایلەکە بکەرەوە بۆ دامەزراندن';
       saveBlob(b);busy=false;
     }).catch(function(){busy=false;frameDownload(u)});
   });
@@ -175,7 +171,7 @@ $('aSave').onclick=function(){
     if(!r.ok)throw new Error(r.status===404?'ڕیپۆ نەدۆزرایەوە (یان Token مۆڵەتی نییە).':'هەڵە '+r.status);
     store.set('gh_tok',tok);store.set('gh_repo',repo);$('tokBox').hidden=true;
     cfg=body;applyCfg();
-    say('aMsg','تۆمار کرا ✓ — دوای نزیکەی ١ خولەک بۆ هەموو کەس دەگۆڕێت.',true);
+    say('aMsg','تۆمار کرا — دوای نزیکەی ١ خولەک بۆ هەموو کەس دەگۆڕێت.',true);
   }).catch(function(e){say('aMsg',e.message||'هەڵەیەک ڕوویدا.')})
     .then(function(){$('aSave').disabled=false});
 };
